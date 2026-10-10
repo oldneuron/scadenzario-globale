@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/icon-192.png"><meta name="theme-color" content="#0f172a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><script src="/qrcode.js"></script><title>Scadenzario Globale</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f5f9;--card:#fff;--tx:#1a1d2e;--mu:#667;--bd:#e1e4ee;--ac:#4f46e5;--ok:#0f9d6b;--wa:#d98a00;--er:#d93a3a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10131f;--card:#1a1e2e;--tx:#eceefa;--mu:#9aa0b8;--bd:#2a3047;--ac:#7c75ff;--ok:#2fd49a;--wa:#f5b942;--er:#ff6b6b}}
+:root[data-theme="dark"]{--bg:#10131f;--card:#1a1e2e;--tx:#eceefa;--mu:#9aa0b8;--bd:#2a3047;--ac:#7c75ff;--ok:#2fd49a;--wa:#f5b942;--er:#ff6b6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.w{max-width:1100px;margin:0 auto;padding:16px}
+header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:22px;margin:0;flex:1;min-width:200px}
+button,select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:8px 12px}
+button{cursor:pointer}button.p{background:var(--ac);color:#fff;border-color:var(--ac)}button.s{padding:4px 9px;font-size:13px}
+.bar{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row input[type=search]{flex:1;min-width:180px}
+.chip{border-radius:20px;padding:4px 12px;font-size:13px}.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.note{font-size:13px;color:var(--mu)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;border-left:5px solid var(--ok)}
+.c.warn{border-left-color:var(--wa)}.c.late{border-left-color:var(--er)}
+.c h3{margin:0;font-size:15px}.sub{color:var(--mu);font-size:13px}
+.tag{font-size:12px;border-radius:8px;padding:2px 8px;background:var(--bg);border:1px solid var(--bd);display:inline-block}
+.tag.ch{color:var(--wa);border-color:var(--wa)}
+.dt{font-weight:700}.late .dt{color:var(--er)}.warn .dt{color:var(--wa)}
+.act{display:flex;gap:6px;margin-top:auto;padding-top:6px;flex-wrap:wrap}
+dialog{border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);width:min(540px,94vw);padding:18px}
+dialog::backdrop{background:#0008}
+label{display:block;font-size:13px;color:var(--mu);margin-top:10px}label input,label select,label textarea{width:100%;margin-top:3px}
+.empty{text-align:center;padding:40px 10px;color:var(--mu)}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}
+.grid.two{grid-template-columns:none;grid-template-rows:repeat(2,auto);grid-auto-flow:column;grid-auto-columns:minmax(270px,310px);overflow-x:auto;padding-bottom:8px}
+.hero{background:linear-gradient(135deg,#0f172a,#1e1b4b);color:#fff;padding:12px 16px;border-radius:16px}
+.hero h1{font-size:20px;line-height:1.2}.hero small{font-size:12px;font-weight:400;color:#a5adc9}
+.hero button.s{background:#ffffff14;border-color:#ffffff30;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:10px}
+.st{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--mu)}
+.st b{display:block;font-size:22px;color:var(--tx)}.st.late b{color:var(--er)}.st.warn b{color:var(--wa)}.st[data-f]{cursor:pointer}
+#qS svg{width:240px;height:240px;background:#fff;border-radius:12px}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+</style></head><body><div class="w">
+<header class="hero"><img src="/icon-192.png" width="46" height="46" style="border-radius:11px" alt=""><h1>Scadenzario Globale<br><small>Scadenze a lungo termine collegate alle norme</small></h1>
+<button id="bAs" class="s">🚗 Veicoli e impianti</button><button id="bIcs" class="s">📅 Calendario</button><button id="bQr" class="s">📱 QR</button><button id="bNot" class="s">🔔 Avvisi</button><button id="bExp" class="s">⬇ Backup</button><button id="bImp" class="s">⬆ Ripristina</button>
+<button class="p" id="bNew">＋ Nuova scadenza</button><input type="file" id="fImp" accept=".json" hidden></header>
+<div id="al"></div><div class="row" style="margin-bottom:8px"><span id="lc" class="note"></span><button class="s" id="bChk">🔎 Controlla ora</button></div><div class="tabs"><button class="chip on" data-t="d">Scadenze</button><button class="chip" data-t="r">Regole normative</button></div>
+<div id="vD"><div class="bar"><div class="row"><input type="search" id="q" placeholder="Cerca caldaia, targa, TARI, IMU…"><select id="fS"></select><select id="fV"><option value="g">Schede</option><option value="r">2 righe</option><option value="t">Cronologia</option></select></div>
+<div class="row" id="fC"></div><div class="row" id="fT"></div></div>
+<div id="dash"></div><div id="sum" class="note" style="margin-bottom:10px"></div><div class="grid" id="list"></div></div>
+<div id="vR" hidden><p class="note">Ogni scadenza può essere collegata a una regola (intervallo + riferimento di legge). Se cambi l'intervallo di una regola, le scadenze collegate vengono ricalcolate dall'ultima esecuzione e marcate «Aggiornata per norma». I valori iniziali sono <b>indicativi</b>: verificali su fonti ufficiali (Gazzetta Ufficiale, Agenzia Entrate, ACI, tua Regione/Comune) e premi «Verificata» per registrare la data del controllo.</p><div style="overflow-x:auto"><table id="rt"></table></div></div>
+</div>
+<dialog id="dlg"><h2 id="dT" style="margin:0 0 4px">Scadenza</h2>
+<label>Da modello normativo<select id="fR"></select></label>
+<label>Titolo<input id="fTi"></label>
+<label>Categoria<select id="fCa"></select></label>
+<label>Riferito a (auto, immobile, persona)<input id="fSu" list="dl" placeholder="es. Fiat Panda, Casa al mare, Mario"><datalist id="dl"></datalist></label>
+<label>Ultima esecuzione (opzionale)<input type="date" id="fL"></label>
+<label>Prossima scadenza<input type="date" id="fD"></label>
+<label>Ripetizione (mesi, 0 = una tantum)<input type="number" id="fI" min="0"></label>
+<label>Avvisami (giorni prima)<input type="number" id="fA" min="0" value="30"></label>
+<label>Importo previsto in € (facoltativo)<input type="number" id="fE" min="0" step="0.01"></label><label>Note<textarea id="fN" rows="2"></textarea></label>
+<div class="row" style="margin-top:14px;justify-content:flex-end"><button id="dX">Annulla</button><button class="p" id="dOk">Salva</button></div></dialog>
+<dialog id="adlg"><h2 style="margin:0 0 8px">Veicoli, impianti e immobili</h2><div id="aL"></div>
+<label>Nome<input id="aN" placeholder="es. Fiat Panda, Caldaia casa, Casa Roma"></label>
+<label>Tipo<select id="aT"><option>🚗 Veicolo</option><option>🔥 Impianto</option><option>🏠 Immobile</option><option>👤 Persona</option></select></label>
+<label>Targa / matricola / note<input id="aP"></label>
+<div class="row" style="margin-top:14px;justify-content:flex-end"><button id="aX">Chiudi</button><button class="p" id="aAdd">Aggiungi</button></div></dialog>
+<dialog id="qdlg" style="text-align:center"><h2 style="margin:0 0 8px">Apri sul telefono</h2><div id="qS"></div><p class="note" id="qU" style="word-break:break-all"></p><p class="note">Inquadra il codice con la fotocamera, poi dal menu del browser scegli «Aggiungi a schermata Home» (su iPhone: Safari, Condividi).</p><button id="qX" class="p">Chiudi</button></dialog>
+<dialog id="rdlg"><h2 id="rT" style="margin:0">Regola</h2>
+<label>Nome<input id="rN"></label><label>Intervallo (mesi)<input type="number" id="rI" min="0"></label>
+<label>Riferimento normativo / note<textarea id="rL" rows="3"></textarea></label>
+<div class="row" style="margin-top:14px;justify-content:flex-end"><button id="rX">Annulla</button><button class="p" id="rOk">Salva</button></div></dialog>
+<script>
+const $=s=>document.querySelector(s),KEY='scadenzario_v1';
+const CATS=['Casa e impianti','Veicoli','Tributi e fisco','Documenti','Assicurazioni','Salute','Altro'];
+const DEF_RULES=[
+{id:'r1',name:'Manutenzione caldaia',cat:'Casa e impianti',m:12,ref:'Secondo libretto del costruttore/installatore (D.P.R. 74/2013).'},
+{id:'r2',name:'Controllo efficienza energetica caldaia',cat:'Casa e impianti',m:48,ref:'D.P.R. 74/2013: di norma 4 anni sotto i 35 kW, 2 anni oltre; verifica regole della tua Regione.'},
+{id:'r3',name:'Revisione auto (dopo la prima)',cat:'Veicoli',m:24,ref:'Art. 80 Codice della Strada: prima revisione dopo 4 anni dall\'immatricolazione, poi ogni 2.'},
+{id:'r4',name:'Bollo auto',cat:'Veicoli',m:12,ref:'Tassa regionale: termini e proroghe variano per Regione.'},
+{id:'r5',name:'Assicurazione RCA',cat:'Assicurazioni',m:12,ref:'Rinnovo annuale della polizza.'},
+{id:'r6',name:'Cambio gomme invernali',cat:'Veicoli',m:12,ref:'Obbligo catene/pneumatici invernali tipicamente 15 nov – 15 apr, per ordinanza dell\'ente proprietario della strada.'},
+{id:'r7',name:'Tagliando auto',cat:'Veicoli',m:12,ref:'Secondo libretto uso e manutenzione.'},
+{id:'r8',name:'IMU',cat:'Tributi e fisco',m:6,ref:'Acconto 16 giugno, saldo 16 dicembre (verifica aliquote del Comune).'},
+{id:'r9',name:'TARI',cat:'Tributi e fisco',m:12,ref:'Scadenze e rate stabilite dal Comune.'},
+{id:'r10',name:'Dichiarazione dei redditi (730)',cat:'Tributi e fisco',m:12,ref:'Termini fissati annualmente dall\'Agenzia delle Entrate.'},
+{id:'r11',name:'Carta d\'identità',cat:'Documenti',m:120,ref:'Validità 10 anni per maggiorenni (3 anni under 3, 5 anni 3-18).'},
+{id:'r12',name:'Patente di guida',cat:'Documenti',m:120,ref:'Patente B: 10 anni fino a 50 anni, poi 5, 3, 2 con l\'età.'},
+{id:'r14',name:'Revisione bombole metano (CNG)',cat:'Veicoli',m:48,ref:'Regolamento ECE/ONU R110 e circolari MIT: di norma controllo ogni 4 anni (verifica sul certificato di collaudo).'},
+{id:'r15',name:'Serbatoio GPL auto',cat:'Veicoli',m:120,ref:'Verifica/sostituzione del serbatoio: di norma 10 anni dal collaudo (verifica sul certificato).'},
+{id:'r16',name:'Inversione gomme',cat:'Veicoli',m:24,ref:'Indicazione tecnica dei costruttori: circa ogni 10.000 km o 2 anni. Non è un obbligo di legge.'},
+{id:'r17',name:'Revisione estintori',cat:'Casa e impianti',m:36,ref:'UNI 9994-1: controlli periodici; revisione indicativamente ogni 36 mesi (idrici) o 60 (polvere).'},
+{id:'r18',name:'Cedolare secca locazioni',cat:'Tributi e fisco',m:12,ref:'Art. 3 D.Lgs. 23/2011: acconto (di norma 30 novembre) e saldo (di norma 30 giugno).'},
+{id:'r13',name:'Passaporto',cat:'Documenti',m:120,ref:'Validità 10 anni per maggiorenni.'}];
+let S=load();
+function norm(s){s.assets=s.assets||[];DEF_RULES.forEach(d=>{if(!s.rules.some(r=>r.id==d.id))s.rules.push(JSON.parse(JSON.stringify(d)))});return s}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.items)return norm(s)}catch(e){}return norm({items:[],rules:JSON.parse(JSON.stringify(DEF_RULES))})}
+let PIN=localStorage.getItem('scad_pin')||'',AL=[],tm;
+const api=(m,b)=>fetch('/api/dati',{method:m,headers:{'x-pin':PIN,'content-type':'application/json'},body:b?JSON.stringify(b):undefined});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}clearTimeout(tm);tm=setTimeout(()=>{if(PIN)api('PUT',{state:S}).catch(()=>{})},800)}
+async function sync(){if(location.protocol=='file:')return;
+ if(!PIN){PIN=prompt("PIN dell'app (quello impostato in Netlify come APP_PIN)")||'';if(!PIN)return;localStorage.setItem('scad_pin',PIN)}
+ try{const r=await api('GET');if(r.status==401){localStorage.removeItem('scad_pin');PIN='';alert('PIN errato');return}
+ const j=await r.json();if(j.state&&j.state.items){S=norm(j.state);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}render()}else await api('PUT',{state:S});
+ AL=j.alerts||[];alerts();$('#lc').textContent=j.meta&&j.meta.last?(j.meta.feeds?'Ultimo controllo automatico delle fonti ufficiali: '+fmt(j.meta.last.slice(0,10))+' ('+j.meta.feeds+' fonti)':'⚠ Controllo eseguito ma nessuna fonte configurata (variabile FEEDS)'):'Controllo automatico: ancora nessuna esecuzione'}catch(e){}}
+function alerts(){const el=$('#al');if(!AL.length){el.innerHTML='';return}
+ el.innerHTML=`<div class="bar" style="border-color:var(--wa)"><b>⚖ ${AL.length} possibili novità normative</b>`+AL.slice(0,8).map(a=>`<div class="note">${esc(a.date)} · <a href="${/^https?:/.test(a.link)?esc(a.link):'#'}" target="_blank" rel="noopener">${esc(a.title)}</a></div>`).join('')+`<div class="row"><button class="s" id="aCp">📋 Copia richiesta per Claude</button><button class="s" id="aOk">Ho letto</button></div></div>`;
+ $('#aCp').onclick=()=>navigator.clipboard.writeText('Aggiorna le norme del mio scadenzario. Verifica queste segnalazioni sulle fonti ufficiali e dimmi quali regole cambiare:\n'+AL.map(a=>a.title+' '+a.link).join('\n'));
+ $('#aOk').onclick=async()=>{AL=[];alerts();try{await api('PUT',{state:S,alerts:[]})}catch(e){}}}
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function addM(s,n){const d=new Date(s+'T12:00:00');const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+n);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return iso(d)}
+const fmt=s=>new Date(s+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'});
+const days=s=>Math.round((new Date(s+'T12:00:00')-new Date(iso(new Date())+'T12:00:00'))/864e5);
+const rule=id=>S.rules.find(r=>r.id===id);
+let F={q:'',cat:'',st:'',sub:''};
+const ST=[['','Tutti gli stati'],['late','Scadute'],['soon','Entro 30 giorni'],['year','Entro 12 mesi']];
+function status(it){const d=days(it.due);return d<0?'late':d<=Math.max(30,it.alert||0)?'soon':d<=365?'year':'ok'}
+function render(){$('#fV').value=V;
+ $('#fS').innerHTML=ST.map(s=>`<option value="${s[0]}" ${F.st==s[0]?'selected':''}>${s[1]}</option>`).join('');
+ const subs=[...new Set(S.items.map(i=>i.subj).filter(Boolean))];
+ $('#fC').innerHTML=['',...CATS].map(c=>`<button class="chip ${F.cat==c?'on':''}" data-c="${esc(c)}">${c||'Tutte'}</button>`).join('');
+ $('#fT').innerHTML=subs.length?['',...subs].map(c=>`<button class="chip ${F.sub==c?'on':''}" data-s="${esc(c)}">${c?'📌 '+esc(c):'Tutti i soggetti'}</button>`).join(''):'';
+ yr='';let L=S.items.filter(i=>(!F.cat||i.cat==F.cat)&&(!F.sub||i.subj==F.sub)&&(!F.st||status(i)==F.st||(F.st=='year'&&status(i)=='soon'))&&(i.title+i.subj+i.notes+i.cat).toLowerCase().includes(F.q.toLowerCase()));
+ L.sort((a,b)=>a.due<b.due?-1:1);
+ const late=S.items.filter(i=>status(i)=='late').length,soon=S.items.filter(i=>status(i)=='soon').length;
+ dash();$('#sum').textContent=`${S.items.length} scadenze · ${late} scadute · ${soon} in arrivo`;
+ $('#list').className='grid'+(V=='r'?' two':'');$('#list').innerHTML=L.length?L.map(i=>{const d=days(i.due),st=status(i),r=rule(i.rule);
+  const lab=d<0?`scaduta da ${-d} g`:d==0?'oggi':d<60?`tra ${d} giorni`:`tra ${Math.round(d/30)} mesi`;
+  return hdr(i)+`<div class="c ${st=='late'?'late':st=='soon'?'warn':''}"><div><span class="tag">${esc(i.cat)}</span> ${i.changed?'<span class="tag ch">⚖ Aggiornata per norma</span>':''}</div>
+  <h3>${esc(i.title)}</h3><div class="sub">${esc(i.subj)}${assetRef(i.subj)}</div><div class="dt">${fmt(i.due)} · ${lab}</div>${i.amt?`<div class="sub">💶 ${eur(i.amt)}</div>`:''}${st=='late'?resRow(i):''}${histRow(i)}
+  ${r?`<div class="sub">⚖ ${esc(r.ref)}</div>`:''}${i.notes?`<div class="sub">📝 ${esc(i.notes)}</div>`:''}
+  <div class="act">${i.rep>0?`<button class="s" data-a="ren" data-id="${i.id}">✔ Fatto, rinnova</button>`:`<button class="s" data-a="del" data-id="${i.id}">✔ Fatto</button>`}<button class="s" data-a="ask" data-id="${i.id}" title="Copia richiesta per Claude">💬</button><button class="s" data-a="ed" data-id="${i.id}">✏️</button><button class="s" data-a="del" data-id="${i.id}">🗑</button></div></div>`}).join('')
+  :`<div class="empty" style="grid-column:1/-1">Nessuna scadenza.<br><br><button class="p" id="bEx">Aggiungi le più comuni come esempio</button></div>`;
+ $('#rt').innerHTML='<tr><th>Regola</th><th>Ogni</th><th>Riferimento</th><th>Verifica</th><th></th></tr>'+S.rules.map(r=>`<tr><td>${esc(r.name)}<div class="note">${esc(r.cat)}</div></td><td>${r.m} mesi</td><td>${esc(r.ref)}</td><td>${r.ver?fmt(r.ver):'<span class="note">mai</span>'}</td><td><button class="s" data-r="ed" data-id="${r.id}">Modifica</button> <button class="s" data-r="ver" data-id="${r.id}">Verificata</button></td></tr>`).join('');
+}
+const dlg=$('#dlg');let EID=null;
+function fillSel(){$('#dl').innerHTML=S.assets.map(a=>`<option value="${esc(a.name)}">`).join('');$('#fCa').innerHTML=CATS.map(c=>`<option>${c}</option>`).join('');$('#fR').innerHTML='<option value="">— Personalizzata —</option>'+S.rules.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join('')}
+function openD(it){fillSel();EID=it?it.id:null;$('#dT').textContent=it?'Modifica scadenza':'Nuova scadenza';
+ $('#fR').value=it?.rule||'';$('#fTi').value=it?.title||'';$('#fCa').value=it?.cat||CATS[0];$('#fSu').value=it?.subj||'';$('#fL').value=it?.last||'';$('#fD').value=it?.due||'';$('#fI').value=it?it.rep:12;$('#fA').value=it?.alert??30;$('#fN').value=it?.notes||'';$('#fE').value=it?.amt||'';dlg.showModal()}
+$('#fR').onchange=e=>{const r=rule(e.target.value);if(r){$('#fTi').value=r.name;$('#fCa').value=r.cat;$('#fI').value=r.m;if($('#fL').value)$('#fD').value=addM($('#fL').value,r.m)}};
+$('#fL').onchange=e=>{const m=+$('#fI').value;if(e.target.value&&m)$('#fD').value=addM(e.target.value,m)};
+$('#dX').onclick=()=>dlg.close();
+$('#dOk').onclick=()=>{const o={title:$('#fTi').value.trim(),cat:$('#fCa').value,subj:$('#fSu').value.trim(),last:$('#fL').value,due:$('#fD').value,rep:+$('#fI').value||0,alert:+$('#fA').value||0,notes:$('#fN').value.trim(),rule:$('#fR').value,amt:+$('#fE').value||0};
+ if(!o.title||!o.due){alert('Servono almeno titolo e data di scadenza.');return}
+ if(EID){Object.assign(S.items.find(i=>i.id==EID),o)}else S.items.push({id:'i'+Date.now()+Math.random().toString(36).slice(2,6),...o});
+ save();dlg.close();render()};
+$('#bNew').onclick=()=>openD();
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.id=='bEx'){const t=iso(new Date());const ex=[['r1','Casa'],['r3','Auto'],['r4','Auto'],['r5','Auto'],['r8','Casa'],['r9','Casa'],['r10','Famiglia'],['r11','Famiglia']];
+  ex.forEach(([id,s],k)=>{const r=rule(id);S.items.push({id:'e'+k+Date.now(),title:r.name,cat:r.cat,subj:s,last:'',due:addM(t,2+k*2),rep:r.m,alert:30,notes:'',rule:id})});save();render();return}
+ if(b.dataset.c!==undefined&&b.closest('#fC')){F.cat=b.dataset.c;render()}
+ if(b.dataset.s!==undefined&&b.closest('#fT')){F.sub=b.dataset.s;render()}
+ if(b.dataset.t){document.querySelectorAll('.tabs .chip').forEach(x=>x.classList.toggle('on',x==b));$('#vD').hidden=b.dataset.t!='d';$('#vR').hidden=b.dataset.t!='r'}
+ const it=S.items.find(i=>i.id==b.dataset.id);
+ if(b.dataset.a=='ed')openD(it);
+ if(b.dataset.a=='book'){const d=prompt('Data della prenotazione (AAAA-MM-GG), vuoto per annullare:',it.res?it.res.date:'');if(d===null)return;if(d&&!/^\d{4}-\d{2}-\d{2}$/.test(d)){alert('Usa il formato AAAA-MM-GG');return}const n=d?(prompt('Note (es. centro revisioni, tecnico):',it.res?it.res.note:'')||''):'';it.res=d?{date:d,note:n}:null;save();render()}
+ if(b.dataset.a=='ask'){navigator.clipboard.writeText('Verifica la normativa vigente per questa scadenza e dimmi se i tempi sono cambiati: '+it.title+(it.subj?' ('+it.subj+')':'')+', ogni '+it.rep+' mesi, prossima scadenza '+it.due+'.');b.textContent='✔'}
+ if(b.dataset.a=='del'&&confirm('Rimuovere questa scadenza?')){S.items=S.items.filter(i=>i!=it);save();render()}
+ if(b.dataset.a=='ren'){it.last=it.due;it.due=addM(it.due,it.rep);it.changed=false;it.res=null;save();render()}
+ if(b.dataset.r){const r=rule(b.dataset.id);if(b.dataset.r=='ver'){r.ver=iso(new Date());save();render()}else{RID=r.id;$('#rN').value=r.name;$('#rI').value=r.m;$('#rL').value=r.ref;rdlg.showModal()}}});
+let RID=null;const rdlg=$('#rdlg');$('#rX').onclick=()=>rdlg.close();
+$('#rOk').onclick=()=>{const r=rule(RID),m=+$('#rI').value||0,old=r.m;r.name=$('#rN').value;r.ref=$('#rL').value;r.m=m;
+ if(m!=old){let n=0;S.items.filter(i=>i.rule==RID).forEach(i=>{i.rep=m;if(i.last&&m){const o=i.due;i.due=addM(i.last,m);i.changed=true;n++;(i.hist=i.hist||[]).push({at:iso(new Date()),from:o,to:i.due,why:r.name+': '+old+' → '+m+' mesi'})}});if(n)alert(`Intervallo cambiato: ricalcolate ${n} scadenze collegate.`)}
+ save();rdlg.close();render()};
+$('#q').oninput=e=>{F.q=e.target.value;render()};$('#fS').onchange=e=>{F.st=e.target.value;render()};
+$('#bExp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'}));a.download='scadenzario-backup.json';a.click()};
+$('#bImp').onclick=()=>$('#fImp').click();
+$('#fImp').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const j=JSON.parse(t);if(!j.items||!j.rules)throw 0;S=norm(j);save();render()}catch(x){alert('File non valido')}})};
+$('#bNot').onclick=async()=>{if(!('Notification' in window)){alert('Notifiche non supportate da questo browser.');return}const p=await Notification.requestPermission();if(p=='granted')notify(true)};
+function notify(f){if(!('Notification' in window)||Notification.permission!='granted')return;const n=S.items.filter(i=>days(i.due)<=(i.alert||30));if(n.length)new Notification('Scadenzario Globale: '+n.length+' scadenze da gestire',{body:n.slice(0,4).map(i=>i.title).join(', ')});else if(f)alert('Nessuna scadenza imminente.')}
+let V=localStorage.getItem('scad_view')||'g',yr='';
+function hdr(i){if(V!='t')return'';const y=i.due.slice(0,4);if(y==yr)return'';yr=y;return`<h3 style="grid-column:1/-1;margin:8px 0 0">Anno ${y}</h3>`}
+function assetRef(n){const a=S.assets.find(x=>x.name==n);return a?` · ${esc(a.type)} ${esc(a.ref||'')}`:''}
+function aRender(){$('#aL').innerHTML=S.assets.map(a=>`<div class="row" style="justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--bd)"><span>${esc(a.type)} <b>${esc(a.name)}</b> <span class="note">${esc(a.ref||'')}</span></span><button class="s" data-asd="${a.id}">🗑</button></div>`).join('')||'<p class="note">Nessun elemento: aggiungine uno sotto.</p>';$('#bAs').textContent='🚗 Veicoli e impianti ('+S.assets.length+')'}
+$('#bAs').onclick=()=>{aRender();$('#adlg').showModal()};$('#aX').onclick=()=>$('#adlg').close();
+$('#aAdd').onclick=()=>{const n=$('#aN').value.trim();if(!n)return;S.assets.push({id:'a'+Date.now(),name:n,type:$('#aT').value,ref:$('#aP').value.trim()});$('#aN').value='';$('#aP').value='';save();aRender();render()};
+$('#aL').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.asd&&confirm('Rimuovere dall\'elenco? Le scadenze restano.')){S.assets=S.assets.filter(a=>a.id!=b.dataset.asd);save();aRender();render()}};
+$('#fV').onchange=e=>{V=e.target.value;localStorage.setItem('scad_view',V);render()};
+const eur=n=>n.toLocaleString('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+function resRow(i){return `<div class="sub">${i.res&&i.res.date?`📅 Prenotata: ${fmt(i.res.date)} ${esc(i.res.note||'')}`:'<b style="color:var(--er)">⚠ Non prenotata</b>'} <button class="s" data-a="book" data-id="${i.id}">${i.res?'Modifica':'Prenota'}</button></div>`}
+function histRow(i){const x=i.hist&&i.hist[i.hist.length-1];return x?`<div class="sub">⚖ ${fmt(x.at)}: ${fmt(x.from)} → ${fmt(x.to)} (${esc(x.why)})</div>`:''}
+function dash(){const it=S.items;if(!it.length){$('#dash').innerHTML='';return}
+ const d=i=>days(i.due),nl=it.filter(i=>d(i)<0).length,nm=it.filter(i=>d(i)>=0&&d(i)<=30).length,n9=it.filter(i=>d(i)>30&&d(i)<=90).length,sp=it.filter(i=>d(i)>=0&&d(i)<=365).reduce((s,i)=>s+(i.amt||0),0);
+ const nx=[...it].sort((a,b)=>a.due<b.due?-1:1)[0];
+ $('#dash').innerHTML=`<div class="stats"><div class="st late" data-f="late"><b>${nl}</b>scadute</div><div class="st warn" data-f="soon"><b>${nm}</b>entro 30 giorni</div><div class="st"><b>${n9}</b>tra 31 e 90 giorni</div><div class="st"><b>${sp?eur(sp):'—'}</b>spesa prevista 12 mesi</div></div><div class="bar" style="flex-direction:row;align-items:center">👉 <span>Prossima da gestire: <b>${esc(nx.title)}</b>${nx.subj?' · '+esc(nx.subj):''} · ${fmt(nx.due)}</span></div>`}
+$('#dash').onclick=e=>{const t=e.target.closest('[data-f]');if(t){F.st=F.st==t.dataset.f?'':t.dataset.f;render()}};
+const ic=t=>String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+function ics(){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Scadenzario Globale//IT','CALSCALE:GREGORIAN','X-WR-CALNAME:Scadenzario Globale'];
+ S.items.forEach(i=>{const r=rule(i.rule),n=iso(new Date(new Date(i.due+'T12:00:00').getTime()+864e5)).replace(/-/g,'');
+  L.push('BEGIN:VEVENT','UID:'+i.id+'@scadenzario','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z','DTSTART;VALUE=DATE:'+i.due.replace(/-/g,''),'DTEND;VALUE=DATE:'+n,'SUMMARY:'+ic(i.title+(i.subj?' - '+i.subj:'')),'DESCRIPTION:'+ic((i.notes||'')+(r?' Norma: '+r.ref:'')),'BEGIN:VALARM','TRIGGER:-P'+(i.alert||30)+'D','ACTION:DISPLAY','DESCRIPTION:'+ic(i.title),'END:VALARM','END:VEVENT')});
+ L.push('END:VCALENDAR');return L.join('\r\n')}
+$('#bIcs').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics()],{type:'text/calendar'}));a.download='scadenze.ics';a.click()};
+$('#bQr').onclick=()=>{const u=location.href.split('#')[0];let s='';try{const q=qrcode(0,'M');q.addData(u);q.make();s=q.createSvgTag({cellSize:6,margin:2,scalable:true})}catch(e){s='<p class="note">QR non disponibile</p>'}$('#qS').innerHTML=s;$('#qU').textContent=u;$('#qdlg').showModal()};
+$('#qX').onclick=()=>$('#qdlg').close();
+$('#bChk').onclick=async()=>{if(!PIN){alert('Disponibile solo dall\'app pubblicata, dopo aver inserito il PIN.');return}
+ $('#bChk').textContent='⏳ Controllo…';try{const r=await fetch('/api/controlla',{method:'POST',headers:{'x-pin':PIN}});if(!r.ok)throw 0;const j=await r.json();
+ alert(j.feeds?`Controllo fatto su ${j.feeds} fonti: ${j.first?'primo giro, stato attuale memorizzato':j.found+' novità trovate'}.`:'Nessuna fonte configurata: imposta la variabile FEEDS su Netlify.');await sync()}catch(e){alert('Controllo non riuscito. Verifica il PIN e che le funzioni siano pubblicate.')}$('#bChk').textContent='🔎 Controlla ora'};
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('/sw.js').catch(()=>{});
+render();aRender();notify(false);sync();
+</script></body></html>

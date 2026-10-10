@@ -1,0 +1,20 @@
+[build]
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/dati"
+  to = "/.netlify/functions/dati"
+  status = 200
+
+[[redirects]]
+  from = "/api/controlla"
+  to = "/.netlify/functions/controlla-ora"
+  status = 200
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
